@@ -1,10 +1,10 @@
 //* Dependencies
 import express from 'express';
-//import morgan from 'morgan';
+import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import mongoose from 'mongoose'
-//import router from './src/routes';
+import router from './src/routes';
 import helmet from 'helmet';
 
 const app = express();
@@ -17,15 +17,14 @@ mongoose.connect("mongodb://localhost:27017/wchallenge", {useCreateIndex:true,us
 mongoose.set('useFindAndModify', false);
 
 //* Middleware
-//app.use(morgan(config.morgan));
+app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-//app.use(express.static(path.join(__dirname,'uploads')));
 
 //* Endpoints
-//app.use('/api',router);
+app.use('/api',router);
 
 //* Port Config
 app.set('port',process.env.PORT || 3000);

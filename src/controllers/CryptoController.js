@@ -1,7 +1,6 @@
 import models from '../models';
 import axios from 'axios';
 import token from '../services/token';
-import e from 'express';
 
 const URI = 'https://api.coingecko.com/api/v3/coins/markets' // ENV
 

@@ -1,16 +1,14 @@
-import mongoose, {Schema} from 'mongoose'
+import {DataTypes} from 'sequelize';
+import db from '../db/db';
 
-const userSchema = new Schema({
-    name:{type:String, maxlength:20},
-    surname:{type:String, maxlength:20},
-    username:{type:String, maxlength:20, unique:true, required:true},
-    password:{type:String, maxlength:70, required:true},
-    coin:{type:String, maxlength:10},
-    state:{type:Number, default:1},
-    rol:{type:Number, default:1},
-    createdAt:{type:Date, default:Date.now}
-})
+const User = db.define('users',{
+    id:{type:DataTypes.SMALLINT, primaryKey:true,autoIncrement: true},
+    username:{type:DataTypes.STRING,allowNull:false},
+    password:{type:DataTypes.STRING,allowNull:false},
+    moneda:{type:DataTypes.STRING,allowNull:false, defaultValue:'USD'},
+    rol:{type:DataTypes.SMALLINT,defaultValue:1}
+});
 
-const User = mongoose.model('user',userSchema);
+User.sync().then(()=>{console.log("User table created")}).catch((e)=>{console.log(e)})
 
 export default User

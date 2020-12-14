@@ -2,19 +2,14 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import path from 'path';
-import mongoose from 'mongoose'
 import router from './src/routes';
 import helmet from 'helmet';
+import db from './src/db/db'
 
 const app = express();
 
-//* DB conection
-mongoose.Promise = global.Promise
-mongoose.connect("mongodb://localhost:27017/wchallenge", {useCreateIndex:true,useNewUrlParser:true,useUnifiedTopology:true})
-.then(mongoose => console.log('DB conected on port 27017'))
-.catch(err => console.log(err));
-mongoose.set('useFindAndModify', false);
+// DB
+db.authenticate().then(()=>{console.log('Database running')}).catch((e)=>{console.log(e)})
 
 //* Middleware
 app.use(morgan('dev'));

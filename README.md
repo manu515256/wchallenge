@@ -2,7 +2,9 @@
 # Wchallenge, CoinGecko wrapper con Nodejs
 
  **Requerimientos**
+ 
 > MySQL
+
 > NodeJS +10
 
  **Instalación**

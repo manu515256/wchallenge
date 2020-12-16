@@ -1,12 +1,15 @@
 import models from '../models';
 import axios from 'axios';
 import token from '../services/token';
+import dotenv from 'dotenv'
+dotenv.config()
 
-const URI = 'https://api.coingecko.com/api/v3/coins/markets' // ENV
+const URI = process.env.GECKOURI;
 
 const cryptoFilter = arr =>{
     let cryptoData = [];
     arr.forEach(e=>{
+
         let cryptoElements = new Object;
         cryptoElements.id = e.id;
         cryptoElements.simbolo = e.symbol;
@@ -17,9 +20,7 @@ const cryptoFilter = arr =>{
 
         cryptoData.push(cryptoElements);
     });
-
     return cryptoData;
-    
 }
 
 export default{
@@ -27,20 +28,18 @@ export default{
         try{
             let tknDecoded = await token.decode(req.headers.token);
             const regMoneda = await models.User.findOne({where:{id:tknDecoded.dataValues.id}});
-            
             const call = await axios.get(URI,{
                 params:{
-                    vs_currency:regMoneda.moneda,
-                    order:`market_cap_${req.query.orden}`,
-                    per_page:req.query.porpagina,
-                    page:req.query.pagina,
+                    vs_currency:regMoneda.moneda || 'usd',
+                    order:`market_cap_${req.query.orden}` || 'desc',
+                    per_page:req.query.cantidad || 20,
                 }
             });
             res.status(200).send(cryptoFilter(call.data));
         
         }catch(e){
-            next(e)
             res.status(500).send("An error ocurred");
+            next(e);
         }
     },
     useradd: async(req,res,next)=>{
@@ -55,7 +54,6 @@ export default{
             res.status(500).send("An error ocurred");
             next(e);
         }
-
     },
     listbyuser: async(req,res,next)=>{
         try{
@@ -70,10 +68,9 @@ export default{
 
                  const getcryptos = await axios.get(URI,{
                     params:{
-                        vs_currency:cryptos[0].user.moneda,
-                        order:`market_cap_${req.query.orden}`,
-                        per_page:req.query.porpagina,
-                        page:req.query.pagina,
+                        vs_currency:cryptos[0].user.moneda || 'usd',
+                        order:`market_cap_${req.query.orden}` || 'asc',
+                        per_page:req.query.cantidad || 25,
                         ids:usersCryptos.join(',')
                     }
                 });
@@ -96,5 +93,4 @@ export default{
             next(e);
         }
     }
-
 }

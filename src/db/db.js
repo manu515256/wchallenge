@@ -1,11 +1,13 @@
 import {Sequelize} from 'sequelize';
+import dotenv from 'dotenv'
+dotenv.config()
 
 const sequelize = new Sequelize(
-    'wchallengedb', // ENV
-    'root',
-    '',
+    process.env.DBNAME,
+    process.env.DBUSERNAME,
+    process.env.DBPASSWORD,
     {
-        host:'localhost',
+        host:process.env.DBHOST,
         dialect:'mysql',
         logging: false
     }

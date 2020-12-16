@@ -7,7 +7,7 @@ const userCrypto = db.define('usercrypto',{
     crypto_id:{type:DataTypes.STRING}
 });
 
-userCrypto.sync().then(()=>{console.log("usercrypto table created")}).catch(e=>{console.log(e)});
+userCrypto.sync().then(()=>{console.log("Usercrypto table created")}).catch(e=>{console.log(e)});
 
 
 export default userCrypto;

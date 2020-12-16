@@ -4,9 +4,8 @@ import auth from '../middlewares/auth';
 const router = routerx();
 
 router.get('/listall',auth.verifyUser,CryptoController.listall);
-router.post('/add',CryptoController.useradd);
+router.post('/add',auth.verifyUser,CryptoController.useradd);
 router.get('/listbyuser',auth.verifyUser,CryptoController.listbyuser);
 router.delete('/remove',auth.verifyUser,CryptoController.remove);
-
 
 export default router;

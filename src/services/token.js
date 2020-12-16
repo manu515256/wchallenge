@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import models from '../models';
+import dotenv from 'dotenv'
+dotenv.config()
 
-const secretKey = 'test' // TO PUT IN A ENV VARIABLE
-
+const secretKey = process.env.TKNSECRETKEY;
 
 export default{
     encode: async (id)=>{

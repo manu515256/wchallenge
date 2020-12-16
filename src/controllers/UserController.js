@@ -12,17 +12,18 @@ export default {
         }
         catch(e){
             if(e.name == "SequelizeUniqueConstraintError"){
-                res.status(500).send("Username already exist");
+                res.status(500).send({error:"Username already exist"});
                 next(e);
-            }else{
+            }else if(e.message == "Validation error: Validation isIn on moneda failed"){
+                res.status(500).send({error:"Invalid courrency"});
+                next(e);
+            }
+            else{
                 res.status(500).send("An error ocurred");
                 next(e);
             }
         }
     },
-    // TODO COMPLETAR CRUD
-
-
     login: async (req,res,next) =>{
         try{
              const user = await models.User.findOne({where:{username:req.body.username}});

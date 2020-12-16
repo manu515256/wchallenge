@@ -1,7 +1,7 @@
 import {Sequelize} from 'sequelize';
 
 const sequelize = new Sequelize(
-    'wchallenge3', // ENV
+    'wchallengedb', // ENV
     'root',
     '',
     {

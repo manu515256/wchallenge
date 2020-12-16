@@ -23,7 +23,7 @@ const cryptoFilter = arr =>{
 }
 
 export default{
-    list: async (req,res,next)=>{
+    listall: async (req,res,next)=>{
         try{
             let tknDecoded = await token.decode(req.headers.token);
             const regMoneda = await models.User.findOne({where:{id:tknDecoded.dataValues.id}});
@@ -62,27 +62,39 @@ export default{
             let usersCryptos = [];
             const tkn = await token.decode(req.headers.token);
             let userId = tkn.dataValues.id;
-            const cryptos = await models.UserCrypto.findAll({where:{user_id:userId},include:[{model:models.User,attributes:['moneda']}],attributes:["crypto_id"]},)
-           //MEJORAR SI NO CARGO CRYPTO
-             cryptos.forEach(e=>{
-                usersCryptos.push(e.crypto_id); 
-            });
+            const cryptos = await models.UserCrypto.findAll({where:{user_id:userId},include:[{model:models.User,attributes:['moneda']}],attributes:["crypto_id"]})
+            if(cryptos != ''){
+                cryptos.forEach(e=>{
+                    usersCryptos.push(e.crypto_id); 
+                });
 
-             const getcryptos = await axios.get(URI,{
-                params:{
-                    vs_currency:cryptos[0].user.moneda,
-                    order:`market_cap_${req.query.orden}`,
-                    per_page:req.query.porpagina,
-                    page:req.query.pagina,
-                    ids:usersCryptos.join(',')
-                }
-            });
-            res.status(200).send(cryptoFilter(getcryptos.data))
-            
+                 const getcryptos = await axios.get(URI,{
+                    params:{
+                        vs_currency:cryptos[0].user.moneda,
+                        order:`market_cap_${req.query.orden}`,
+                        per_page:req.query.porpagina,
+                        page:req.query.pagina,
+                        ids:usersCryptos.join(',')
+                    }
+                });
+                res.status(200).send(cryptoFilter(getcryptos.data))
+            }else{
+                res.status(404).send("No entries")
+            }
         }catch(e){
             res.status(500).send("An error ocurred");
             next(e);
         }
     },
+    remove: async (req,res,next)=>{
+        try {
+            const tkn = await token.decode(req.headers.token);
+            const reg = await models.UserCrypto.destroy({where:{crypto_id:req.body.crypto_id,user_id:tkn.id}})
+            res.status(200).send({message:"Coin deleted",reg})
+        }catch(e){
+            res.status(500).send("An error ocurred");
+            next(e);
+        }
+    }
 
 }

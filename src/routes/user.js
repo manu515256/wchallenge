@@ -5,5 +5,4 @@ const router = routerx();
 router.post('/add',UserController.add);
 router.post('/login',UserController.login);
 
-
 export default router;

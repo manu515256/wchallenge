@@ -30,7 +30,7 @@ export default{
             const regMoneda = await models.User.findOne({where:{id:tknDecoded.dataValues.id}});
             const call = await axios.get(URI,{
                 params:{
-                    vs_currency:regMoneda.moneda || 'usd',
+                    vs_currency: req.query.moneda || regMoneda.moneda,
                     order:`market_cap_${req.query.orden}` || 'desc',
                     per_page:req.query.cantidad || 20,
                 }

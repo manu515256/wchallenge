@@ -27,6 +27,7 @@
 
 ## Endpoints
 **USUARIO**
+
 POST
 >`/api/`  `user`/  `add` 
 >>Recibe body (Obligatorio)

@@ -20,6 +20,7 @@ const cryptoFilter = arr =>{
 
         cryptoData.push(cryptoElements);
     });
+
     return cryptoData;
 }
 
@@ -60,15 +61,16 @@ export default{
             let usersCryptos = [];
             const tkn = await token.decode(req.headers.token);
             let userId = tkn.dataValues.id;
-            const cryptos = await models.UserCrypto.findAll({where:{user_id:userId},include:[{model:models.User,attributes:['moneda']}],attributes:["crypto_id"]})
+            const cryptos = await models.User.findOne({where:{id:userId},include:[{model:models.UserCrypto,attributes:['crypto_id']}],attributes:["moneda"]})
+
             if(cryptos != ''){
-                cryptos.forEach(e=>{
+                cryptos.usercryptos.forEach(e=>{
                     usersCryptos.push(e.crypto_id); 
                 });
 
                  const getcryptos = await axios.get(URI,{
                     params:{
-                        vs_currency:cryptos[0].user.moneda || 'usd',
+                        vs_currency:cryptos.moneda || 'usd',
                         order:`market_cap_${req.query.orden}` || 'asc',
                         per_page:req.query.cantidad || 25,
                         ids:usersCryptos.join(',')

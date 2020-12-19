@@ -2,7 +2,9 @@
 # Wchallenge, CoinGecko wrapper con Nodejs
 
  **Requerimientos**
+ 
 > MySQL
+
 > NodeJS +10
 
  **Instalación**
@@ -27,6 +29,7 @@
 
 ## Endpoints
 **USUARIO**
+
 POST
 >`/api/`  `user`/  `add` 
 >>Recibe body (Obligatorio)

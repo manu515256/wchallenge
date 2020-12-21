@@ -24,6 +24,19 @@ export default {
             }
         }
     },
+    remove: async (req,res,next)=>{
+        try {
+            const tkn = await token.decode(req.headers.token);
+
+            const reg0 = await models.UserCrypto.destroy({where:{user_id:tkn.id}})
+            const reg = await models.User.destroy({where:{id:tkn.id}})
+
+            res.status(200).send({message:"User deleted",reg})
+        }catch(e){
+            res.status(500).send("An error ocurred");
+            next(e);
+        }
+    },
     login: async (req,res,next) =>{
         try{
              const user = await models.User.findOne({where:{username:req.body.username}});

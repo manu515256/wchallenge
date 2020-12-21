@@ -4,5 +4,6 @@ const router = routerx();
 
 router.post('/add',UserController.add);
 router.post('/login',UserController.login);
+router.delete('/remove',UserController.remove);
 
 export default router;

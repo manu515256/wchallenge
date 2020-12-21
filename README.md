@@ -48,6 +48,13 @@ POST
 		username: STRING,
 		password: STRING,
 	}
+	
+	
+DELETE
+>`/api/`  `user`/  `remove` 
+>>Recibe token (Obligatorio) borra un usuario en base al token enviado
+>
+
 
 ### Cryptomonedas
 #### Nota: los siguientes endpoint TODOS requieren token valido cargado en el header como "token" 
